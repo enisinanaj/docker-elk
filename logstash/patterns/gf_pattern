@@ -1,0 +1,7 @@
+# Glassfish server.log format. May span multiple lines (e.g. Java stacktrace), so in logstash use with multiline codec/filter.
+THREADNAME Thread-%{INT:threadnumberinname}
+GLASSFISHTHREADS _ThreadID=%{INT:threadid};_ThreadName=%{THREADNAME};
+GLASSFISHLOG \[#\|%{TIMESTAMP_ISO8601:timestamp}\|%{LOGLEVEL:loglevel}\|%{DATA:application}\|%{GREEDYDATA:component}\|%{GLASSFISHTHREADS:threadinfo}\|%{GREEDYDATA:message}\|#\]
+
+# Glassfish access.log format
+GLASSFISHACCESS "%{IPORHOST:clientip}" "%{USER:auth}" "%{HTTPDATE:timestamp}" "(?:%{WORD:verb} %{SESSIONREQUEST:request}(?: HTTP/%{NUMBER:httpversion})?|%{DATA:rawrequest})" %{NUMBER:response} (?:%{NUMBER:bytes}|-)
